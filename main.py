@@ -1,20 +1,30 @@
 from pieces import *
-desiredmove = [-1,-1,-1,-1]
-piecefound = Rook('black', 1, 0)
+from helper import *
+turn = True  # True represents white, False represents black
 
-for piece in gamestate:
-    if (piece.xpos, piece.ypos) == (desiredmove[0], desiredmove[1]):
-        piecefound = piece
-        break
-dump()
-while not piecefound.move(int(desiredmove[2]), int(desiredmove[3])):
-    desiredmove = input('Please state move \n')
+while True:
+    desiredmove = statemove()
     if desiredmove == '0000':
         dump()
-        desiredmove = list(input('Please state move \n'))
         continue
-    desiredmove = list(desiredmove)
-    continue
+    else:
+        piecefound = find(desiredmove)
+        if piecefound == False:
+            print('This piece cannot be found, please try again. \n')
+            continue
+        if turn == True:
+            if piecefound.color == 'black':
+                print('The specified piece to move is black, however it is white\'s turn. \n')
+                continue
+        else:
+            if piecefound.color == 'white':
+                print('The specified piece to move is white, however it is black\'s turn. \n')
+                continue
+        if piecefound.move(int(desiredmove[2]), int(desiredmove[3])) == False:
+            print('This move is invalid, please try again. \n')
+            continue
+    turn = not turn
+
 
 
 
